@@ -1,0 +1,49 @@
+html,body{
+	height:100%;
+	position:relative;
+	background-image: -webkit-linear-gradient(top,#fff,#aaa);
+}
+
+#wrap{
+	margin:0 auto;
+	width:800px;
+	height: auto;
+}
+
+.header {
+	font-size: 30px;
+	line-height: 30px;
+	height: 30px;
+	display: block;
+	width: 100%;
+	text-align: center;
+	padding: 20px 0;
+}
+
+.container {
+	width: 640px;
+	height: 560px;
+	margin: 0 auto 10px;
+	background-color: #ccc;
+	position: relative;
+}
+
+.container span:first-child {
+	background-color: rgba(0,0,0,0)!important;
+	z-index: 99!important;
+}
+
+.container span.element {
+	position: absolute;
+	top: 20px;
+	left: 30px;
+	display: block;
+	width: 180px;
+	height: 160px;
+	line-height: 160px;
+	font-size: 60px;
+	text-align: center;
+	-webkit-transition: all 0.15s;
+	background-color: #999;
+	z-index: 0;
+}
