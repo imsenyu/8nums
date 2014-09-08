@@ -10,7 +10,7 @@ eightNumsApp.filter('getWidth', function() {
     };
 });
 
-eightNumsApp.controller('mainPanel', function($scope, $timeout) {
+eightNumsApp.controller('mainPanel', ['$scope', '$timeout'], function($scope, $timeout) {
 
     $scope.filter = {
         getWidth: function (data) {
@@ -93,7 +93,7 @@ eightNumsApp.controller('mainPanel', function($scope, $timeout) {
         pathSelect: function (event, index) {
             $scope.sourceIndex = index;
             $scope.showPosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
-            try{$scope.$digest();}catch(e){};
+            try{$scope.$digest();}catch(e){}
         },
         keyControl: function (e) {
             if( e.which===38 ) {
@@ -169,7 +169,7 @@ function eightNums() {
                 case 't': return defaultTarget;
                 default: return [1,2,3,4,5,6,7,8,0];
             }
-        }
+        };
     }
 
     function hasSolution(arS, arT) {
