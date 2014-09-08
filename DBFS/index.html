@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title>DBFS - 8nums</title>
+	<title>8nums - DBFS</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" type="text/css" href="./css/base.css">
 	<link rel="stylesheet" type="text/css" href="./css/index_pcpage.css">
@@ -13,7 +13,7 @@
 <body class="zh_CN">
 	<div id="wrap" ng-controller="mainPanel">
 		<header class="header">
-		8 numbers - demo
+		8 Numbers - Demo
 		</header>
 		<div class="content clearfix">
 			<div class="square-show">
@@ -32,8 +32,8 @@
 
 			</div>
 			<section class="step-list">
-				<span class="step-total">steps: {{result.path.length || "Can\'t Reach"}}</span>
-				<ul >
+				<span class="step-total" ng-style="{'text-align': result.solve ? 'left' : 'center'}">{{ result.path.length ? ('Steps: '+result.path.length+'  Times: '+result.time+'ms  States: '+result.stateNum) : "Can\'t Reach"}}</span>
+				<ul ng-if="result.solve">
 					<li ng-repeat="p in result.path" ng-mouseover="$parent.event.pathView($event, $index)" ng-mouseleave="$parent.event.pathResume($event, $index)" ng-class="{'current': $index === $parent.sourceIndex}" ng-click="$parent.event.pathSelect($event, $index)"><dt>{{$index+1}}.</dt><dd>{{p}}&nbsp;&nbsp;{{event.calcDir(result.path, $index)}}</dd></li>
 				</ul>
 			</section>
@@ -50,6 +50,10 @@
 					<section class="left-source">
 						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth(sourcePosition[$index])*40+'px,'+filter.getHeight(sourcePosition[$index])*40+'px)'}">{{ele}}</div>
 					</section>
+					<section class="arrow">
+						<div class="arrow-shaft"></div>
+						<div class="arrow-point"></div>
+					</section>
 					<section class="right-target">
 						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth(targetPosition[$index])*40+'px,'+filter.getHeight(targetPosition[$index])*40+'px)'}">{{ele}}</div>
 					</section>
@@ -57,11 +61,14 @@
 				</section>
 			</div>
 		</div>
-		{{result}}
+		<div class="console">
+			{{result}}
+		</div>
+
 
 	</div>
 	<footer class="footer">
-		copy-right
+		<p>Copyright©2014 木林森林木</p>
 	</footer>
 <script>
 angular.bootstrap(document, ['eightNumsApp']);
