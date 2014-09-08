@@ -1,4 +1,4 @@
-var eightNumsApp = angular.module('8nums', []);
+var eightNumsApp = angular.module('eightNumsApp', []);
 
 eightNumsApp.filter('getWidth', function() {
     return function (data) {
@@ -12,7 +12,14 @@ eightNumsApp.filter('getWidth', function() {
 
 eightNumsApp.controller('mainPanel', function($scope, $timeout) {
 
-
+    $scope.filter = {
+        getWidth: function (data) {
+            return data%3;
+        },
+        getHeight: function (data) {
+            return parseInt(data/3);
+        }
+    };
     $scope.event = {
         random: function () {
             $scope.event.reset();
@@ -20,6 +27,7 @@ eightNumsApp.controller('mainPanel', function($scope, $timeout) {
             var rnd = func.setRandom();
             console.log("source", rnd);
             $scope.sourcePosition = func.remap( rnd );
+            $scope.showPosition = func.remap( rnd );
             $scope.targetPosition = func.remap( func.getTargetArr() );
 
             $scope.hasSolution = func.hasSolution();
@@ -28,13 +36,13 @@ eightNumsApp.controller('mainPanel', function($scope, $timeout) {
         solve: function () {
             $scope.result = func.getPath();
             if ( $scope.result && $scope.result.solve )
-                $scope.sourcePosition = func.remap( $scope.result.path[0] );
+                $scope.showPosition = func.remap( $scope.result.path[0] );
             $scope.sourceIndex = 0;
         },
         next: function () {
             $scope.sourceIndex ++;
             if ( $scope.result && $scope.result.solve && $scope.sourceIndex < $scope.result.path.length) {
-                $scope.sourcePosition = func.remap( $scope.result.path[$scope.sourceIndex] );
+                $scope.showPosition = func.remap( $scope.result.path[$scope.sourceIndex] );
 
             }
             else {
@@ -52,7 +60,7 @@ eightNumsApp.controller('mainPanel', function($scope, $timeout) {
             $timeout(function(){$scope.showMessage = false;}, 400);
 
             if ( $scope.result && $scope.result.solve )
-                $scope.sourcePosition = func.remap( $scope.result.path[0] );
+                $scope.showPosition = func.remap( $scope.result.path[0] );
              $scope.sourceIndex = 0;
         },
         auto: function () {
@@ -73,18 +81,18 @@ eightNumsApp.controller('mainPanel', function($scope, $timeout) {
             //console.log(event,index);
             $scope.holdMouseHover = true;
             $scope.tempIndex = index;
-            $scope.sourcePosition = func.remap( $scope.result.path[ $scope.tempIndex ] );
+            $scope.showPosition = func.remap( $scope.result.path[ $scope.tempIndex ] );
         },
         pathResume: function () {
             $scope.holdMouseHover = false;
             $timeout(function(){
                 if ($scope.holdMouseHover) return;
-                $scope.sourcePosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
+                $scope.showPosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
             },500);
         },
         pathSelect: function (event, index) {
             $scope.sourceIndex = index;
-            $scope.sourcePosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
+            $scope.showPosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
             try{$scope.$digest();}catch(e){};
         },
         keyControl: function (e) {

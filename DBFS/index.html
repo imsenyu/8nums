@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="8nums">
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 	<title>DBFS - 8nums</title>
@@ -18,10 +18,10 @@
 		<div class="content clearfix">
 			<div class="square-show">
 				<section class="grid-container">
-					<span class="grid" ng-repeat="g in ['',1,2,3,4,5,6,7,8]" style="-webkit-transform: translate({{($index|getWidth)*125}}px, {{($index|getHeight)*125}}px)"></span>
+					<span class="grid" ng-repeat="g in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth($index)*125+'px,'+filter.getHeight($index)*125+'px)'}"></span>
 				</section>
 				<section class="title-container">
-					<span class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" style="-webkit-transform: translate({{($parent.sourcePosition[$index]|getWidth)*125}}px, {{($parent.sourcePosition[$index]|getHeight)*125}}px)">{{ele}}</span>
+					<span class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth(showPosition[$index])*125+'px,'+filter.getHeight(showPosition[$index])*125+'px)'}">{{ele}}</span>
 				</section>
 				<section class="message" ng-show="showMessage" ng-class="{'css3': animateMessage}">
 					<p>{{hasSolution?'Completed !':'Sorry ...'}}</p>
@@ -48,10 +48,10 @@
 				<section class="step-status">
 					<span class="hasSolution" ng-class="{'success': hasSolution, 'fail': !hasSolution}">{{hasSolution?'has Solution':"hasn\'t Solution"}}
 					<section class="left-source">
-						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" style="-webkit-transform: translate({{($parent.sourcePosition[$index]|getWidth)*40}}px, {{($parent.sourcePosition[$index]|getHeight)*40}}px)">{{ele}}</div>
+						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth(sourcePosition[$index])*40+'px,'+filter.getHeight(sourcePosition[$index])*40+'px)'}">{{ele}}</div>
 					</section>
 					<section class="right-target">
-						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" style="-webkit-transform: translate({{($parent.targetPosition[$index]|getWidth)*40}}px, {{($parent.targetPosition[$index]|getHeight)*40}}px)">{{ele}}</div>
+						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth(targetPosition[$index])*40+'px,'+filter.getHeight(targetPosition[$index])*40+'px)'}">{{ele}}</div>
 					</section>
 					</span>
 				</section>
@@ -62,5 +62,9 @@
 	</div>
 	<footer class="footer">
 		copy-right
-		</footer>
-</body></html>
+	</footer>
+<script>
+angular.bootstrap(document, ['eightNumsApp']);
+</script>
+</body>
+</html>

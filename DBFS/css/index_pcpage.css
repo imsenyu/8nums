@@ -1,6 +1,7 @@
 html,body{
 	position:relative;
-	background-image: -webkit-linear-gradient(top,#fff,#aaa);
+	background-image: -webkit-linear-gradient(top,#fff,#b3b3b3);
+	background-image: -ms-linear-gradient(top,#fff,#b3b3b3);
 }
 html {
 	height: 100%;
@@ -72,6 +73,7 @@ body {min-height: 100%;}
 	font-weight: bold;
 	text-align: center;
 	-webkit-transition: all 0.12s;
+	-ms-transition: all 0.12s;
 	background-color: #EEE4DA;
 	color: #565656;
 	z-index: 1;
@@ -97,6 +99,7 @@ body {min-height: 100%;}
 	border-radius: 10px;
 	opacity: 0;
 	-webkit-transition: all 0.35s;
+	-ms-transition: all 0.35s;
 }
 
 .square-show .message p {
@@ -129,15 +132,18 @@ body {min-height: 100%;}
 }
 .tool-button:hover {
 	background-image: -webkit-linear-gradient(top, #F0F0F0, #D0D2D7);
+	background-image: -ms-linear-gradient(top, #F0F0F0, #D0D2D7);
 	text-shadow: 0 0 1px rgba(0,0,0,0.2);
 }
 .tool-button:active {
 	background-image: -webkit-linear-gradient(top, #D0D2D7, #F0F0F0);
+	background-image: -ms-linear-gradient(top, #D0D2D7, #F0F0F0);
 }
 .tool-button {
 	padding: 0px 12px;
 	height: 30px;
 	background-image: -webkit-linear-gradient(top, #FEFEFE, #EAEAEA);
+	background-image: -ms-linear-gradient(top, #FEFEFE, #EAEAEA);
 	text-align: center;
 	line-height: 26px;
 	font-size: 17px;
