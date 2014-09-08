@@ -10,7 +10,7 @@ eightNumsApp.filter('getWidth', function() {
     };
 });
 
-eightNumsApp.controller('mainPanel', ['$scope', '$timeout'], function($scope, $timeout) {
+eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $timeout) {
 
     $scope.filter = {
         getWidth: function (data) {
@@ -139,7 +139,7 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout'], function($scope, $t
 
     angular.element(document).on('keydown',$scope.event.keyControl);
 
-});
+}]);
 
 
 function eightNums() {
