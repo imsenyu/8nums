@@ -15,13 +15,52 @@
 		<header class="header">
 		8 numbers - demo
 		</header>
-		<section class="container">
-			<span class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" data-pos="{{$parent.position[$index]}}" style="-webkit-transform: translate({{($parent.position[$index]|getWidth)*200}}px, {{($parent.position[$index]|getHeight)*180}}px)">{{ele}}</span>
-		</section>
-		<input type="button" ng-click="event.random()" value="random" />
-		<input type="button" ng-click="event.next()" value="next" />
-		<input type="button" ng-click="event.reset()" value="reset" />
-		<input type="button" ng-click="event.auto()" value="auto" />
+		<div class="content clearfix">
+			<div class="square-show">
+				<section class="grid-container">
+					<span class="grid" ng-repeat="g in ['',1,2,3,4,5,6,7,8]" style="-webkit-transform: translate({{($index|getWidth)*125}}px, {{($index|getHeight)*125}}px)"></span>
+				</section>
+				<section class="title-container">
+					<span class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" style="-webkit-transform: translate({{($parent.sourcePosition[$index]|getWidth)*125}}px, {{($parent.sourcePosition[$index]|getHeight)*125}}px)">{{ele}}</span>
+				</section>
+				<section class="message" ng-show="showMessage" ng-class="{'css3': animateMessage}">
+					<p>{{hasSolution?'Completed !':'Sorry ...'}}</p>
+					<div class="button-container">
+						<div class="button" ng-click="event.reset()">reset</div>
+					</div>
+				</section>
+
+			</div>
+			<section class="step-list">
+				<span class="step-total">steps: {{result.path.length || "Can\'t Reach"}}</span>
+				<ul >
+					<li ng-repeat="p in result.path" ng-mouseover="$parent.event.pathView($event, $index)" ng-mouseleave="$parent.event.pathResume($event, $index)" ng-class="{'current': $index === $parent.sourceIndex}" ng-click="$parent.event.pathSelect($event, $index)"><dt>{{$index+1}}.</dt><dd>{{p}}&nbsp;&nbsp;{{event.calcDir(result.path, $index)}}</dd></li>
+				</ul>
+			</section>
+			<div class="toolbar">
+				<section class="tool-controller">
+					<span class="tool-button" ng-click="event.random()" >random</span>
+		<!-- 			<div class="tool-button" ng-click="event.solve()" >solve</div> -->
+					<span class="tool-button" ng-click="event.reset()" >reset</span>
+					<span class="tool-button" ng-click="event.auto()" >auto</span>
+					<span class="tool-button" ng-click="event.next()" >next</span>
+				</section>
+				<section class="step-status">
+					<span class="hasSolution" ng-class="{'success': hasSolution, 'fail': !hasSolution}">{{hasSolution?'has Solution':"hasn\'t Solution"}}
+					<section class="left-source">
+						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" style="-webkit-transform: translate({{($parent.sourcePosition[$index]|getWidth)*40}}px, {{($parent.sourcePosition[$index]|getHeight)*40}}px)">{{ele}}</div>
+					</section>
+					<section class="right-target">
+						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" style="-webkit-transform: translate({{($parent.targetPosition[$index]|getWidth)*40}}px, {{($parent.targetPosition[$index]|getHeight)*40}}px)">{{ele}}</div>
+					</section>
+					</span>
+				</section>
+			</div>
+		</div>
 		{{result}}
+
 	</div>
+	<footer class="footer">
+		copy-right
+		</footer>
 </body></html>

@@ -12,49 +12,125 @@ eightNumsApp.filter('getWidth', function() {
 
 eightNumsApp.controller('mainPanel', function($scope, $timeout) {
 
-    var func = eightNums();
-    $scope.count = 0;
-    $scope.result = func.getPath();
-    if ( $scope.result.solve )
-        $scope.position = func.remap( $scope.result.path[0] );
+
     $scope.event = {
         random: function () {
-            console.log(func.setRandom());
+            $scope.event.reset();
+
+            var rnd = func.setRandom();
+            console.log("source", rnd);
+            $scope.sourcePosition = func.remap( rnd );
+            $scope.targetPosition = func.remap( func.getTargetArr() );
+
+            $scope.hasSolution = func.hasSolution();
+            $scope.event.solve();
+        },
+        solve: function () {
             $scope.result = func.getPath();
-            if ( $scope.result.solve )
-                $scope.position = func.remap( $scope.result.path[0] );
-            $scope.count = 0;
+            if ( $scope.result && $scope.result.solve )
+                $scope.sourcePosition = func.remap( $scope.result.path[0] );
+            $scope.sourceIndex = 0;
         },
         next: function () {
-            $scope.count ++;
-            if ( $scope.result.solve && $scope.count < $scope.result.path.length) {
-                $scope.position = func.remap( $scope.result.path[$scope.count] );
+            $scope.sourceIndex ++;
+            if ( $scope.result && $scope.result.solve && $scope.sourceIndex < $scope.result.path.length) {
+                $scope.sourcePosition = func.remap( $scope.result.path[$scope.sourceIndex] );
 
             }
-            else if ( confirm("done?") ) {
-                $scope.position = func.remap( $scope.result.path[0] );
-                $scope.count = 0;
-            }
             else {
+                $scope.sourceIndex --;
+                $scope.showMessage = true;
+                $timeout(function(){$scope.animateMessage = true;}, 50);
+                $timeout(function(){$scope.animateMessage = false;},2000);
+                $timeout(function(){$scope.showMessage = false;},2400);
                 return false;
             }
             return true;
         },
         reset: function () {
-            if ( $scope.result.solve )
-                $scope.position = func.remap( $scope.result.path[0] );
-             $scope.count = 0;
+            $scope.animateMessage = false;
+            $timeout(function(){$scope.showMessage = false;}, 400);
+
+            if ( $scope.result && $scope.result.solve )
+                $scope.sourcePosition = func.remap( $scope.result.path[0] );
+             $scope.sourceIndex = 0;
         },
         auto: function () {
+            if ( $scope.async ) return;
+            $scope.async = true;
             goNext();
             function goNext() {
                 if ($scope.event.next())
                     $timeout( function () {
                         goNext();
                     }, 150 );
+                else {
+                    $scope.async = false;
+                }
+            }
+        },
+        pathView: function (event, index) {
+            //console.log(event,index);
+            $scope.holdMouseHover = true;
+            $scope.tempIndex = index;
+            $scope.sourcePosition = func.remap( $scope.result.path[ $scope.tempIndex ] );
+        },
+        pathResume: function () {
+            $scope.holdMouseHover = false;
+            $timeout(function(){
+                if ($scope.holdMouseHover) return;
+                $scope.sourcePosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
+            },500);
+        },
+        pathSelect: function (event, index) {
+            $scope.sourceIndex = index;
+            $scope.sourcePosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
+            try{$scope.$digest();}catch(e){};
+        },
+        keyControl: function (e) {
+            if( e.which===38 ) {
+                if ( $scope.sourceIndex > 0 )
+                    $scope.event.pathSelect( null, $scope.sourceIndex-1 );
+                e.preventDefault();
+            }
+            else if ( e.which===40 ) {
+                if ( $scope.result && $scope.result.path && $scope.sourceIndex+1 < $scope.result.path.length)
+                    $scope.event.pathSelect( null, $scope.sourceIndex+1 );
+                e.preventDefault();
+            }
+        },
+        calcDir: function (arr, index) {
+            var a = index, b = index + 1;
+            if ( arr.length <= b ) return '=';
+            var Da = findBlank(arr[a]);
+            var Db = findBlank(arr[b]);
+            if ( Da<Db ) {
+                if ( Db-Da === 1 )
+                    return '←';
+                else
+                    return '↑';
+            }
+            else {
+                if ( Da-Db === 1)
+                    return '→';
+                else
+                    return '↓';
+            }
+            function findBlank(arr) {
+                for( var i=0;i<9;i++ ) {
+                    if ( arr[i] === 0 ) return i;
+                }
+                return -1;
             }
         }
     };
+
+    var func = eightNums();
+    $scope.event.random();
+    $scope.event.solve();
+
+    angular.element(document).on('keydown',$scope.event.keyControl);
+
 });
 
 
@@ -72,8 +148,27 @@ function eightNums() {
     return {
         setRandom: randomSource,
         getPath: produce,
-        remap: remap
+        remap: remap,
+        hasSolution: hasSolution,
+        getSourceArr: getArr('s'),
+        getTargetArr: getArr('t'),
     };
+
+    function getArr(type) {
+        return function () {
+            switch (type) {
+                case 's': return defaultSource;
+                case 't': return defaultTarget;
+                default: return [1,2,3,4,5,6,7,8,0];
+            }
+        }
+    }
+
+    function hasSolution(arS, arT) {
+        arS = arS || defaultSource;
+        arT = arT || defaultTarget;
+        return sigma(arS)%2 === sigma(arT)%2;
+    }
 
     function remap(arr) {
         var ret = [];
@@ -194,8 +289,11 @@ function eightNums() {
         var targetDest ;
         var paths = [];
 
+
         tar = tar || defaultTarget;
         sou = sou || defaultSource;
+        defaultTarget = tar;
+        defaultSource = sou;
 
         convert(tar, target);
         convert(sou, source);
