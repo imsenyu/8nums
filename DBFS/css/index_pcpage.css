@@ -12,7 +12,7 @@ body {min-height: 100%;}
 	margin: 0 auto;
 	padding: 0 0 5px;
 	width:800px;
-	box-shadow: 0 -20px 20px 1px #999;
+	box-shadow: 0 -3px 20px 1px #ccc;
 	background-color: rgba(255, 255, 255, 0.5);
 
 
@@ -24,6 +24,7 @@ body {min-height: 100%;}
 	text-align: center;
 	background-color: rgba(255, 255, 255, 0.5);
 	color: #555;
+	box-shadow:0 3px 20px 1px #ccc;
 }
 .header {
 	font-size: 36px;
