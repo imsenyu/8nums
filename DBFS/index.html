@@ -23,10 +23,10 @@
 		<div class="content clearfix">
 			<div class="square-show">
 				<section class="grid-container">
-					<span class="grid" ng-repeat="g in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth($index)*125+'px,'+filter.getHeight($index)*125+'px)'}"></span>
+					<span class="grid" ng-repeat="g in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate3d('+filter.getWidth($index)*125+'px,'+filter.getHeight($index)*125+'px,0)'}"></span>
 				</section>
 				<section class="title-container">
-					<span class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth(showPosition[$index])*125+'px,'+filter.getHeight(showPosition[$index])*125+'px)'}">{{ele}}</span>
+					<span class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate3d('+filter.getWidth(showPosition[$index])*125+'px,'+filter.getHeight(showPosition[$index])*125+'px,0)'}">{{ele}}</span>
 				</section>
 				<section class="message" ng-show="showMessage" ng-class="{'css3': animateMessage}">
 					<p>{{hasSolution?'Completed !':'Sorry ...'}}</p>
@@ -53,14 +53,14 @@
 				<section class="step-status">
 					<span class="hasSolution" ng-class="{'success': hasSolution, 'fail': !hasSolution}">{{hasSolution?'has Solution':"hasn\'t Solution"}}
 					<section class="left-source">
-						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth(sourcePosition[$index])*40+'px,'+filter.getHeight(sourcePosition[$index])*40+'px)'}">{{ele}}</div>
+						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate3d('+filter.getWidth(sourcePosition[$index])*40+'px,'+filter.getHeight(sourcePosition[$index])*40+'px,0)'}">{{ele}}</div>
 					</section>
 					<section class="arrow">
 						<div class="arrow-shaft"></div>
 						<div class="arrow-point"></div>
 					</section>
 					<section class="right-target">
-						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate('+filter.getWidth(targetPosition[$index])*40+'px,'+filter.getHeight(targetPosition[$index])*40+'px)'}">{{ele}}</div>
+						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate3d('+filter.getWidth(targetPosition[$index])*40+'px,'+filter.getHeight(targetPosition[$index])*40+'px,0)'}">{{ele}}</div>
 					</section>
 					</span>
 				</section>
