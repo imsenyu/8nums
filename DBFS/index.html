@@ -38,6 +38,7 @@
 			</div>
 			<section class="step-list">
 				<span class="step-total" ng-style="{'text-align': result.solve ? 'left' : 'center'}">{{ result.path.length ? ('Steps: '+result.path.length+'  Times: '+result.time+'ms  States: '+result.stateNum) : "Can\'t Reach"}}</span>
+				<span>{{fValue}}</span>
 				<ul ng-if="result.solve">
 					<li ng-repeat="p in result.path" ng-mouseover="$parent.event.pathView($event, $index)" ng-mouseleave="$parent.event.pathResume($event, $index)" ng-class="{'current': $index === $parent.sourceIndex}" ng-click="$parent.event.pathSelect($event, $index)"><dt>{{$index+1}}.</dt><dd>{{p}}&nbsp;&nbsp;{{event.calcDir(result.path, $index)}}</dd></li>
 				</ul>

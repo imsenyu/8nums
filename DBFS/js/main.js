@@ -1,4 +1,5 @@
 var eightNumsApp = angular.module('eightNumsApp', []);
+var eightNumsApp = angular.module('eightNumsApp', []);
 
 eightNumsApp.filter('getWidth', function() {
     return function (data) {
@@ -11,7 +12,7 @@ eightNumsApp.filter('getWidth', function() {
 });
 
 eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $timeout) {
-
+	$scope.fValue = 0;
     $scope.filter = {
         getWidth: function (data) {
             return data%3;
@@ -43,7 +44,7 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
             $scope.sourceIndex ++;
             if ( $scope.result && $scope.result.solve && $scope.sourceIndex < $scope.result.path.length) {
                 $scope.showPosition = func.remap( $scope.result.path[$scope.sourceIndex] );
-
+                $scope.fValue = $scope.event.getFValue();
             }
             else {
                 $scope.sourceIndex --;
@@ -82,17 +83,20 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
             $scope.holdMouseHover = true;
             $scope.tempIndex = index;
             $scope.showPosition = func.remap( $scope.result.path[ $scope.tempIndex ] );
+        	$scope.fValue = $scope.event.getFValue();
         },
         pathResume: function () {
             $scope.holdMouseHover = false;
             $timeout(function(){
                 if ($scope.holdMouseHover) return;
                 $scope.showPosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
+            	$scope.fValue = $scope.event.getFValue();
             },500);
         },
         pathSelect: function (event, index) {
             $scope.sourceIndex = index;
             $scope.showPosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
+            $scope.fValue = $scope.event.getFValue();
             try{$scope.$digest();}catch(e){}
         },
         keyControl: function (e) {
@@ -130,6 +134,17 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
                 }
                 return -1;
             }
+        },
+        getFValue: function () {
+        	var ret = 0;
+        	console.log('remap',$scope.showPosition);
+        	for (var i=0;i<9;i++) {
+        		if (i==0)
+        			ret += 0;//(8 != $scope.showPosition[0]);
+        		else 
+        			ret += (i-1 != $scope.showPosition[i]);
+        	}
+        	return ret;
         }
     };
 
@@ -152,6 +167,7 @@ function eightNums() {
     var beginT, endT;
     var defaultSource = [2,1,7,6,3,4,5,8,0];
     var defaultTarget = [1,2,3,4,5,6,7,8,0];
+
 
     return {
         setRandom: randomSource,
