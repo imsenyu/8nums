@@ -149,7 +149,7 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
     };
 
     var func = eightNums();
-    $scope.event.random();
+    //$scope.event.random();
     $scope.event.solve();
 
     angular.element(document).on('keydown',$scope.event.keyControl);
