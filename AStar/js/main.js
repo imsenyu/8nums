@@ -274,7 +274,7 @@ function eightNums() {
     var target = {sta:0,pos:0,step:0,visit:0,astar:0};
     var source = {sta:0,pos:0,step:0,visit:0,astar:0};
     var beginT, endT;
-    var defaultSource = [2,1,7,6,3,4,5,8,0];
+    var defaultSource = [8,6,7,2,5,4,3,1,0];//[2,1,7,6,3,4,5,8,0];
     var defaultTarget = [1,2,3,4,5,6,7,8,0];
 
 
@@ -446,17 +446,17 @@ function eightNums() {
             //console.log('state', state, map[state])
             var state = st[s];
             var ret = 0;
-            if(state.astar)return state.astar;
+            if(state.astar)return state.astar+ state.step;
             for (var i = 0; i< 9; i++) {
                 if (state.pos !== i) {
-                    ret += manhattan[((state.state>>(24-i*3) ) & 7 )+1][i+1];
+                    ret += manhattan[((state.sta>>(24-i*3) ) & 7 )+1][i+1];
                    // console.log("lll", ((state.state>>(24-i*3) ) & 7 ), i)
                 }
             }
-            state.astar = ret + state.step;
-            return state.astar;
+            state.astar = ret ;
+            return state.astar+ state.step;
         }
-
+        console.log(1);
         tar = tar || defaultTarget;
         sou = sou || defaultSource;
         defaultTarget = tar;
@@ -466,17 +466,17 @@ function eightNums() {
         convert(sou, source);
 
         beginT = (new Date()).getTime();
-
+         console.log(2);
         i = search(source);
         q.push(i);
         AStar(i);
-     //   i = search(target);
+        search(target);
      //   q.push(i);
 
         //st[i] = st[i] || {sta:0,pos:0,step:0,visit:0,astar:0};
         //st[i].visit = 1;
-        //st[i].step  = 1;
-
+        st[i].step  = 1;
+         console.log(3);
         if (sigma(sou)%2 !== sigma(tar)%2) {
             return {solve: false};
         }
@@ -490,6 +490,7 @@ function eightNums() {
         while ( q.length() && ! isSolve ) {
             count ++;
             index = q.top();
+            if(count%1000==0)console.log(count);
             for ( var j = 0; j < 4; j++ ) {
                 if( d[st[index].pos][j] ) {
                     var flag = search(exchange(st[index],d[st[index].pos][j]));
@@ -498,28 +499,37 @@ function eightNums() {
                        // st[flag].visit = st[index].visit;
                         q.push(flag);
                         paths[flag] = index;
+                        //paths[index] = flag;
                     }
-                    else {
-                        if(st[flag].state == target.state)
+                    
+                        if(st[flag].sta == target.sta)
                         {
                             sourceDest = flag;
+                            paths[flag] = index;
                             isSolve = true;
                             steps = (st[index].step );
                         }
-                    }
+                    
                 }
             }
 
             q.pop();
         }
-        while(q.length())q.pop();
+        
         endT = (new Date()).getTime();
+        console.log("done");
+        q = new prioityQueue(cmp);
 
-        if(!isSolve) return {solve: false, time: endT-beginT, stateNum: count};
-        console.log( paths);
-        return {solve: false, time: endT-beginT, stateNum: count};
-        // var changePath = [];
-        // stepTraverse(sourceDest, paths, changePath, true);
+        if(!isSolve) {
+            st = [];
+            return {solve: false, time: endT-beginT, stateNum: count};
+        }
+        var changePath = [];
+         console.log(4);
+        stepTraverse(sourceDest, paths, changePath, true);
+        st = [];
+         console.log(5);
+        return {time: endT-beginT, stateNum: count, stepNum: steps, solve: true, path: changePath};
         // stepTraverse(targetDest, paths, changePath, false);
         // var tempState = {};
         // convert(changePath[0], tempState);
@@ -528,18 +538,19 @@ function eightNums() {
 
         // return {time: endT-beginT, stateNum: count, stepNum: steps, solve: true, path: changePath};
 
-        // function stepTraverse(s, p, c, b) {
-        //     var t = s;
-        //     var flag = false;
-        //     while(1) {
-        //         var arr = [];
-        //         reconvert(st[t], arr);
-        //         b ? c.unshift(arr) : c.push(arr);
-        //         t = p[t];
-        //         if(!t || flag)break;
-        //         flag = source.sta === st[t].sta;
-        //     }
-        // }
+        function stepTraverse(s, p, c, b) {
+            var t = s;
+            var flag = false;
+            var cnt=40;
+            while(cnt--) {
+                var arr = [];
+                reconvert(st[t], arr);
+                b ? c.unshift(arr) : c.push(arr);
+                t = p[t];
+                if(!t || flag)break;
+                flag = source.sta === st[t].sta;
+            }
+        }
 
     }
 

@@ -224,7 +224,7 @@ var utils = {
 
 function main() {
     var targetArr = [1,2,3,4,5,6,7,8,0];
-    var sourceArr = [8,4,6,1,3,7,5,2,0];//[8,6,7,2,5,4,3,1,0];
+    var sourceArr = [8,6,7,2,5,4,3,1,0];//[8,6,7,2,5,4,3,1,0];
 var manhattan = //第i个数及其所处不同位置的Manhattan路径长度  
 [  
 [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],  
@@ -248,15 +248,15 @@ var manhattan = //第i个数及其所处不同位置的Manhattan路径长度
         //console.log('state', state, map[state])
         var state = states[s];
         var ret = 0;
-        if(state.astar)return state.astar;
+        if(state.astar)return state.astar + state.step;
         for (var i = 0; i< 9; i++) {
             if (state.pos !== i) {
                 ret += manhattan[((state.state>>(24-i*3) ) & 7 )+1][i+1];
                // console.log("lll", ((state.state>>(24-i*3) ) & 7 ), i)
             }
         }
-        state.astar = ret + state.step;
-        return state.astar;
+        state.astar = ret;
+        return state.astar + state.step;
     }
 
     var queue = new prioityQueue(cmp);;
@@ -291,7 +291,7 @@ var manhattan = //第i个数及其所处不同位置的Manhattan路径长度
     while ( queue.length() && ! isSolve ) {
         var topState = queue.top();
         cntt++;
-     //   console.log("now", utils.state2arr(states[topState]),states[topState]);
+     if(cntt<10)   console.log("now", topState,utils.state2arr(states[topState]),states[topState]);
         for ( var i=0;i<4;i++ ) {
             if ( direction[states[topState].pos][i] && !(states[topState].visit & (1<<i)) ) {
                 states[topState].visit |= (1<<i);
