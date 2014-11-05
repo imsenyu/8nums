@@ -130,6 +130,20 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
             return parseInt(data/3);
         }
     };
+        var manhattan = //第i个数及其所处不同位置的Manhattan路径长度  
+        [  
+        [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],  
+        [-1, 0, 1, 2, 1, 2, 3, 2, 3, 4],  
+        [-1, 1, 0, 1, 2, 1, 2, 3, 2, 3],  
+        [-1, 2, 1, 0, 3, 2, 1, 4, 3, 2],  
+        [-1, 1, 2, 3, 0, 1, 2, 1, 2, 3],  
+        [-1, 2, 1, 2, 1, 0, 1, 2, 1, 2],  
+        [-1, 3, 2, 1, 2, 1, 0, 3, 2, 1],  
+        [-1, 2, 3, 4, 1, 2, 3, 0, 1, 2],  
+        [-1, 3, 2, 3, 2, 1, 2, 1, 0, 1],  
+        [-1, 4, 3, 2, 3, 2, 1, 2, 1, 0]  
+          
+        ];
     $scope.event = {
         random: function () {
             $scope.event.reset();
@@ -258,7 +272,7 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
     };
 
     var func = eightNums();
-    //$scope.event.random();
+    $scope.event.random();
     $scope.event.solve();
 
     angular.element(document).on('keydown',$scope.event.keyControl);
