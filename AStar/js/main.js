@@ -535,6 +535,9 @@ function eightNums() {
     function produce(sou, tar) {
         init();
         var i = 0;
+        /**
+         * @description q 为优先队列对象
+         */
         var q = new prioityQueue(cmp);
         var index;
         var count = 0;
@@ -542,6 +545,9 @@ function eightNums() {
         var isSolve = false;
         var sourceDest ;
         var targetDest ;
+        /**
+         * @description 路径记录
+         */
         var paths = [];
 
         var manhattan = //第i个数及其所处不同位置的Manhattan路径长度  
@@ -559,11 +565,17 @@ function eightNums() {
           
         ];
 
+        /**
+         * @description 优先队列大小比较函数
+         */
         function cmp(a, b) {
             var A=AStar(a), B=AStar(b);
             return A==B?(st[a].step<st[b].step):A<B;
         }
 
+        /**
+         * @description 计算AStar曼哈顿路径 H函数
+         */
         function AStar(s) {
             //console.log('state', state, map[state])
             var state = st[s];
@@ -578,87 +590,124 @@ function eightNums() {
             state.astar = ret ;
             return state.astar+ state.step;
         }
-        console.log(1);
+        
+        /**
+         * @description 初始化源状态，目标状态
+         */
         tar = tar || defaultTarget;
         sou = sou || defaultSource;
         defaultTarget = tar;
         defaultSource = sou;
 
+        /**
+         * @description 由数组数值转换成 二进制数字存储状态
+         */
         convert(tar, target);
         convert(sou, source);
 
         beginT = (new Date()).getTime();
-         console.log(2);
-        i = search(source);
-        q.push(i);
-        AStar(i);
-        search(target);
-     //   q.push(i);
 
-        //st[i] = st[i] || {sta:0,pos:0,step:0,visit:0,astar:0};
-        //st[i].visit = 1;
+        /**
+         * @description 查找source的哈希映射
+         */
+        i = search(source);
+
+        /**
+         * @description 把待搜索原状态压入优先队列
+         */
+        q.push(i);
+        /**
+         * @description 初始化哈希映射i的数据（即初始状态的数据）
+         */
+        AStar(i);
+        /**
+         * @description 建立目标状态哈希数据
+         */
+        search(target);
+
         st[i].step  = 1;
-         console.log(3);
+        /**
+         * @description 判定是否可解
+         */
         if (sigma(sou)%2 !== sigma(tar)%2) {
             return {solve: false};
         }
 
-
+        /**
+         * @description 若待搜索原状态==目标状态，跳出
+         */
         if(!(source.sta^target.sta)&&!(source.pos^target.pos)) {
             while(q.length())q.pop();
             return {changePath: [tar], stepNum: 0, solve: true};
         }
 
+        /**
+         * @description 开始队列循环搜索
+         */
         while ( q.length() && ! isSolve ) {
             count ++;
             index = q.top();
-            if(count%1000==0)console.log(count);
+
+            /**
+             * @description 上下左右四个方向
+             */
             for ( var j = 0; j < 4; j++ ) {
+                /**
+                 * @description 若方向可走，则搜索交换数字之后的哈希状态
+                 */
                 if( d[st[index].pos][j] ) {
                     var flag = search(exchange(st[index],d[st[index].pos][j]));
+                    /**
+                     * @description 若该哈希状态未搜索过，则压入优先队列
+                     */
                     if ( !st[flag].step ) {
                         st[flag].step = st[index].step + 1;
-                       // st[flag].visit = st[index].visit;
                         q.push(flag);
                         paths[flag] = index;
-                        //paths[index] = flag;
                     }
                     
-                        if(st[flag].sta == target.sta)
-                        {
-                            sourceDest = flag;
-                            paths[flag] = index;
-                            isSolve = true;
-                            steps = (st[index].step );
-                        }
+                    /**
+                     * @description 若交换后的状态和原状态一样，则找到
+                     */
+                    if(st[flag].sta == target.sta)
+                    {
+                        sourceDest = flag;
+                        paths[flag] = index;
+                        isSolve = true;
+                        steps = (st[index].step );
+                    }
                     
                 }
             }
-
+            /**
+             * @description 查找完状态，出队列
+             */
             q.pop();
         }
         
         endT = (new Date()).getTime();
         console.log("done");
+        /**
+         * @description 优先队列clear
+         */
         q = new prioityQueue(cmp);
 
+        /**
+         * @description 没找到，一般不可能，因为之前已经判定过了
+         */
         if(!isSolve) {
             st = [];
             return {solve: false, time: endT-beginT, stateNum: count};
         }
         var changePath = [];
-         console.log(4);
+        
+        /**
+         * @description 由path记录的路径还原最终路径结果
+         */
         stepTraverse(sourceDest, paths, changePath, true);
         st = [];
-         console.log(5);
+
         return {time: endT-beginT, stateNum: count, stepNum: steps, solve: true, path: changePath};
-        // stepTraverse(targetDest, paths, changePath, false);
-        // var tempState = {};
-        // convert(changePath[0], tempState);
-
-        // if(tempState.sta === target.sta) changePath = changePath.reverse();
-
-        // return {time: endT-beginT, stateNum: count, stepNum: steps, solve: true, path: changePath};
 
         function stepTraverse(s, p, c, b) {
             var t = s;
