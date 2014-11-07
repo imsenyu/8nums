@@ -362,16 +362,41 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
  */
 function eightNums() {
 
+    /**
+     * @description 最大状态数
+     */
     var MAXN = 388211;
+    /**
+     * @description [i][j]，在i位置的元素值与上下左右进行交换后的位置，打表
+     */
     var d = [[0,4,0,2],[0,5,1,3],[0,6,2,0],[1,7,0,5],[2,8,4,6],[3,9,5,0],[4,0,0,8],[5,0,7,9],[6,0,8,0]];
+    /**
+     * @description 状态map
+     */
     var st = [];
+    /**
+     * @description 目标，源状态最初对象
+     */
     var target = {sta:0,pos:0,step:0,visit:0,astar:0};
     var source = {sta:0,pos:0,step:0,visit:0,astar:0};
+    /**
+     * @description 计时
+     */
     var beginT, endT;
+    /**
+     * @description 默认随机状态
+     */
     var defaultSource = [8,6,7,2,5,4,3,1,0];//[2,1,7,6,3,4,5,8,0];
     var defaultTarget = [1,2,3,4,5,6,7,8,0];
 
-
+    /**
+     * @description 对外暴露方法
+     * @method 设置随机源状态
+     * @method 计算！取得路径
+     * @method 数值列表与位置列表的转换
+     * @method 判定是否有解
+     * @method 取得源、目标状态数值数组
+     */
     return {
         setRandom: randomSource,
         getPath: produce,
@@ -504,6 +529,9 @@ function eightNums() {
         return index;
     }
 
+    /**
+     * @description 八数码问题主要处理函数
+     */
     function produce(sou, tar) {
         init();
         var i = 0;
