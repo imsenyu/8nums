@@ -1,3 +1,11 @@
+ /** 
+ * @fileoverview prioityQueue
+ * @author 郁森<senyu@mail.dlut.edu.cn>
+ * @description Javascript实现的 优先队列,用于AStar搜索的 队列实现
+ * @init 
+ *   @argument cmp 大小比较函数
+ *   @argument arr 初始化数组
+ */
  ;(function (global) {
     var prePrioityQueue = prioityQueue.prePrioityQueue = global.prioityQueue;
     global.prioityQueue = prioityQueue;
@@ -9,6 +17,7 @@
     var heap = [];
     var op = {};
     var length = 0;
+
     /**
      * @description prioityQueue工厂函数
      * @arg {Function} cmp 排序比较函数
@@ -23,6 +32,9 @@
         console.log('Heap Inited', heap);
     }
 
+    /**
+     * @description 给定初始化数据表后进行第一次重排
+     */
     function initQueue() {
         var l = length;
         for ( var i = parseInt(l/2); i>0; i-- ) {
@@ -30,6 +42,9 @@
         }
     }
 
+    /**
+     * @description 对l,r区间内进行堆排序
+     */
     function queueAdjustTop(l, r) {
         var rc = heap[l];
         for ( var i = 2*l; i<= r; i *= 2 ) {
@@ -42,7 +57,10 @@
         }
         heap[l] = rc;
     }
-    //把最后一个元素往上冒
+
+    /**
+     * @description 把最后一个元素往上冒泡
+     */
     function queueAdjustBottom() {
         var l = length,
             p,
@@ -60,6 +78,9 @@
         }
     }
 
+    /**
+     * @description 对外暴露 压队尾元素
+     */
     function pushQueue(data) {
         length++;
         heap.push(data);
@@ -67,6 +88,9 @@
         //console.log('Heap Pushed', heap);
     }
 
+    /**
+     * @description 对外暴露 弹出队首元素，返回空
+     */
     function popQueue() {
         heap[1] = heap[length];
         heap.pop();
@@ -82,6 +106,9 @@
     //  console.log('Heap Poped', heap);
     }
 
+    /**
+     * @description 对外暴露 返回队首元素
+     */
     function topQueue() {
         if (length>0) return heap[1];
         else {
@@ -90,10 +117,16 @@
         }
     }
 
+    /**
+     * @description 对外暴露 返回队列长度
+     */
     function getQueueLength() {
         return length;
     }
 
+    /**
+     * @description 原型链调用方法
+     */
     prioityQueue.prototype = {
         push: pushQueue,
         pop: popQueue,
@@ -107,9 +140,18 @@
 
  })(window);
 
+
+/** 
+ * @fileoverview angular-controller
+ * @author 郁森<senyu@mail.dlut.edu.cn>
+ * @description 基于Angular框架的控制器，控制页面元素，资源
+ */
 var eightNumsApp = angular.module('eightNumsApp', []);
 var eightNumsApp = angular.module('eightNumsApp', []);
 
+/**
+ * @description Angular.Filter过滤器
+ */
 eightNumsApp.filter('getWidth', function() {
     return function (data) {
         return data%3;
@@ -130,21 +172,24 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
             return parseInt(data/3);
         }
     };
-        var manhattan = //第i个数及其所处不同位置的Manhattan路径长度  
-        [  
-        [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],  
-        [-1, 0, 1, 2, 1, 2, 3, 2, 3, 4],  
-        [-1, 1, 0, 1, 2, 1, 2, 3, 2, 3],  
-        [-1, 2, 1, 0, 3, 2, 1, 4, 3, 2],  
-        [-1, 1, 2, 3, 0, 1, 2, 1, 2, 3],  
-        [-1, 2, 1, 2, 1, 0, 1, 2, 1, 2],  
-        [-1, 3, 2, 1, 2, 1, 0, 3, 2, 1],  
-        [-1, 2, 3, 4, 1, 2, 3, 0, 1, 2],  
-        [-1, 3, 2, 3, 2, 1, 2, 1, 0, 1],  
-        [-1, 4, 3, 2, 3, 2, 1, 2, 1, 0]  
-          
-        ];
+    var manhattan = //第i个数及其所处不同位置的Manhattan路径长度  
+    [  
+    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],  
+    [-1, 0, 1, 2, 1, 2, 3, 2, 3, 4],  
+    [-1, 1, 0, 1, 2, 1, 2, 3, 2, 3],  
+    [-1, 2, 1, 0, 3, 2, 1, 4, 3, 2],  
+    [-1, 1, 2, 3, 0, 1, 2, 1, 2, 3],  
+    [-1, 2, 1, 2, 1, 0, 1, 2, 1, 2],  
+    [-1, 3, 2, 1, 2, 1, 0, 3, 2, 1],  
+    [-1, 2, 3, 4, 1, 2, 3, 0, 1, 2],  
+    [-1, 3, 2, 3, 2, 1, 2, 1, 0, 1],  
+    [-1, 4, 3, 2, 3, 2, 1, 2, 1, 0]  
+      
+    ];
     $scope.event = {
+        /**
+         * @description UIrandom按钮，随机阵列并计算结果返回显示
+         */
         random: function () {
             $scope.event.reset();
 
@@ -157,12 +202,18 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
             $scope.hasSolution = func.hasSolution();
             $scope.event.solve();
         },
+        /**
+         * @description 对当前结果进行显示
+         */
         solve: function () {
             $scope.result = func.getPath();
             if ( $scope.result && $scope.result.solve )
                 $scope.showPosition = func.remap( $scope.result.path[0] );
             $scope.sourceIndex = 0;
         },
+        /**
+         * @description 步入下一个状态
+         */
         next: function () {
             $scope.sourceIndex ++;
             if ( $scope.result && $scope.result.solve && $scope.sourceIndex < $scope.result.path.length) {
@@ -179,6 +230,9 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
             }
             return true;
         },
+        /**
+         * @description 重置运行状态为0
+         */
         reset: function () {
             $scope.animateMessage = false;
             $timeout(function(){$scope.showMessage = false;}, 400);
@@ -187,6 +241,9 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
                 $scope.showPosition = func.remap( $scope.result.path[0] );
              $scope.sourceIndex = 0;
         },
+        /**
+         * @description 自动调用next方法
+         */
         auto: function () {
             if ( $scope.async ) return;
             $scope.async = true;
@@ -201,6 +258,9 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
                 }
             }
         },
+        /**
+         * @description 鼠标移动到路径上时 临时显示
+         */
         pathView: function (event, index) {
             //console.log(event,index);
             $scope.holdMouseHover = true;
@@ -208,6 +268,9 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
             $scope.showPosition = func.remap( $scope.result.path[ $scope.tempIndex ] );
         	$scope.fValue = $scope.event.getFValue();
         },
+        /**
+         * @description 鼠标移出时恢复状态显示
+         */
         pathResume: function () {
             $scope.holdMouseHover = false;
             $timeout(function(){
@@ -216,12 +279,18 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
             	$scope.fValue = $scope.event.getFValue();
             },500);
         },
+        /**
+         * @description 鼠标点选时状态切换
+         */
         pathSelect: function (event, index) {
             $scope.sourceIndex = index;
             $scope.showPosition = func.remap( $scope.result.path[ $scope.sourceIndex ] );
             $scope.fValue = $scope.event.getFValue();
             try{$scope.$digest();}catch(e){}
         },
+        /**
+         * @description 监听键盘动作
+         */
         keyControl: function (e) {
             if( e.which===38 ) {
                 if ( $scope.sourceIndex > 0 )
@@ -234,6 +303,9 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
                 e.preventDefault();
             }
         },
+        /**
+         * @description 给路径显示时加入运行方向显示
+         */
         calcDir: function (arr, index) {
             var a = index, b = index + 1;
             if ( arr.length <= b ) return '=';
@@ -258,6 +330,9 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
                 return -1;
             }
         },
+        /**
+         * @description 计算不在位数值（待修改）
+         */
         getFValue: function () {
         	var ret = 0;
         	console.log('remap',$scope.showPosition);
@@ -280,6 +355,11 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
 }]);
 
 
+/** 
+ * @fileoverview eightNums
+ * @author 郁森<senyu@mail.dlut.edu.cn>
+ * @description 八数码问题处理封装
+ */
 function eightNums() {
 
     var MAXN = 388211;
