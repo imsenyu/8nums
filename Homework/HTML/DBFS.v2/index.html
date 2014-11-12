@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>8nums - DBFS</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" type="text/css" href="./css/base.css">
+	<link rel="stylesheet" type="text/css" href="./css/index_pcpage.css">
+	<script type="text/javascript" src="./js/jquery/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" src="./js/angular/angular.js"></script>
+	<script type="text/javascript" src="./js/main.js" ></script>
+</head>
+<body class="zh_CN">
+	<!--[if lte IE 9]>
+	<div style="display: block; width: 100%; height: 30px; position: absolute; top: 0; left: 0; background-color: #F9D607; text-align: center;font-weight: bold;line-height: 30px;font-size: 16px;border-bottom: 1px solid #CCC;">
+	本页面使用了 AngularJS框架 和 CSS3动画，请使用 IE10/ IE11/ Chrome/ Safari/ Firefox/ Opera 等现代浏览器浏览，以保证显示效果
+	</div>
+	<![endif]-->
+	<div id="wrap" ng-controller="mainPanel">
+		<header class="header">
+		8 Numbers - Demo
+		</header>
+		<div class="content clearfix">
+			<div class="square-show">
+				<section class="grid-container">
+					<span class="grid" ng-repeat="g in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate3d('+filter.getWidth($index)*125+'px,'+filter.getHeight($index)*125+'px,0)'}"></span>
+				</section>
+				<section class="title-container">
+					<span class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate3d('+filter.getWidth(showPosition[$index])*125+'px,'+filter.getHeight(showPosition[$index])*125+'px,0)'}">{{ele}}</span>
+				</section>
+				<section class="message" ng-show="showMessage" ng-class="{'css3': animateMessage}">
+					<p>{{hasSolution?'Completed !':'Sorry ...'}}</p>
+					<div class="button-container">
+						<div class="button" ng-click="event.reset()">reset</div>
+					</div>
+				</section>
+
+			</div>
+			<section class="step-list">
+				<span class="step-total" ng-style="{'text-align': result.solve ? 'left' : 'center'}">{{ result.path.length ? ('Steps: '+result.path.length+'  Times: '+result.time+'ms  States: '+result.stateNum) : "Can\'t Reach"}}</span>
+				<span>{{fValue}}</span>
+				<ul ng-if="result.solve">
+					<li ng-repeat="p in result.path" ng-mouseover="$parent.event.pathView($event, $index)" ng-mouseleave="$parent.event.pathResume($event, $index)" ng-class="{'current': $index === $parent.sourceIndex}" ng-click="$parent.event.pathSelect($event, $index)"><dt>{{$index+1}}.</dt><dd>{{p}}&nbsp;&nbsp;{{event.calcDir(result.path, $index)}}</dd></li>
+				</ul>
+			</section>
+			<div class="toolbar">
+				<section class="tool-controller">
+					<span class="tool-button" ng-click="event.random()" >随机</span>
+		<!-- 			<div class="tool-button" ng-click="event.solve()" >solve</div> -->
+					<span class="tool-button" ng-click="event.reset()" >重置</span>
+					<span class="tool-button" ng-click="event.auto()" >动画</span>
+					<span class="tool-button" ng-click="event.next()" >下一个</span>
+					<span class="tool-button" ng-click="event.set()" >设置</span>
+					<span class="tool-line">设定源
+					<input class="tool-input" ng-model="inputSourceArr" />
+					</span>
+				</section>
+				<section class="step-status">
+					<span class="hasSolution" ng-class="{'success': hasSolution, 'fail': !hasSolution}">{{hasSolution?'has Solution':"hasn\'t Solution"}}
+					<section class="left-source">
+						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate3d('+filter.getWidth(sourcePosition[$index])*40+'px,'+filter.getHeight(sourcePosition[$index])*40+'px,0)'}">{{ele}}</div>
+					</section>
+					<section class="arrow">
+						<div class="arrow-shaft"></div>
+						<div class="arrow-point"></div>
+					</section>
+					<section class="right-target">
+						<div class="element" ng-repeat="ele in ['',1,2,3,4,5,6,7,8]" ng-style="{'transform': 'translate3d('+filter.getWidth(targetPosition[$index])*40+'px,'+filter.getHeight(targetPosition[$index])*40+'px,0)'}">{{ele}}</div>
+					</section>
+					</span>
+				</section>
+			</div>
+		</div>
+		<div class="console">
+			{{result}}
+		</div>
+
+
+	</div>
+	<footer class="footer" style="text-align: left;text-indent: 62px;">
+		<p><b>HTML+Javascript</b> 快速构建的 <b>"八数码问题"</b></p>
+		<p>&nbsp;<b>&nbsp;状态存储</b> 使用每3个bit存储一个数字</p>
+		<p>&nbsp;<b>&nbsp;搜索算法</b> 由源序列和目标序列开始 双向宽搜(Double BFS)</p>
+		<p>&nbsp;<b>&nbsp;动画实现</b> 使用CSS3 transform/transition实现</p>
+		<p>&nbsp;<b>&nbsp;交互实现</b> 使用AngularJS MVVM Framework进行数据绑定</p>
+		<p>&nbsp;<b>&nbsp;游戏规则</b> 使用键盘"↑，↓，←，→"按键移动滑块</p>
+		<p style="text-align: right;margin-right: 65px;">Copyright©2014 木林森林木</p>
+	</footer>
+<script>
+angular.bootstrap(document, ['eightNums_DBFSApp']);
+</script>
+</body>
+</html>
