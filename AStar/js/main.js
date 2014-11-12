@@ -146,13 +146,13 @@
  * @author 郁森<senyu@mail.dlut.edu.cn>
  * @description 基于Angular框架的控制器，控制页面元素，资源
  */
-var eightNumsApp = angular.module('eightNumsApp', []);
-var eightNumsApp = angular.module('eightNumsApp', []);
+var eightNums_AStarApp = angular.module('eightNums_AStarApp', []);
+var eightNums_AStarApp = angular.module('eightNums_AStarApp', []);
 
 /**
  * @description Angular.Filter过滤器
  */
-eightNumsApp.filter('getWidth', function() {
+eightNums_AStarApp.filter('getWidth', function() {
     return function (data) {
         return data%3;
     };
@@ -162,7 +162,7 @@ eightNumsApp.filter('getWidth', function() {
     };
 });
 
-eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $timeout) {
+eightNums_AStarApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $timeout) {
 	$scope.fValue = 0;
     $scope.filter = {
         getWidth: function (data) {
@@ -346,7 +346,7 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
         }
     };
 
-    var func = eightNums();
+    var func = eightNums_AStar();
     $scope.event.random();
     $scope.event.solve();
 
@@ -356,11 +356,11 @@ eightNumsApp.controller('mainPanel', ['$scope', '$timeout', function($scope, $ti
 
 
 /** 
- * @fileoverview eightNums
+ * @fileoverview eightNums_AStar
  * @author 郁森<senyu@mail.dlut.edu.cn>
  * @description 八数码问题处理封装
  */
-function eightNums() {
+function eightNums_AStar() {
 
     /**
      * @description 最大状态数
@@ -406,6 +406,9 @@ function eightNums() {
         getTargetArr: getArr('t'),
     };
 
+    /**
+     * @description 获取状态值
+     */
     function getArr(type) {
         return function () {
             switch (type) {
@@ -416,6 +419,9 @@ function eightNums() {
         };
     }
 
+    /**
+     * @description 判定是否有解
+     */
     function hasSolution(arS, arT) {
         arS = arS || defaultSource;
         arT = arT || defaultTarget;

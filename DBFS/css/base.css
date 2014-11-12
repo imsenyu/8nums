@@ -140,3 +140,6 @@ height: 1px;
 *::selection {
 	background: none;
 }
+input::selection {
+	background: #CCC;
+}

@@ -45,11 +45,15 @@
 			</section>
 			<div class="toolbar">
 				<section class="tool-controller">
-					<span class="tool-button" ng-click="event.random()" >random</span>
+					<span class="tool-button" ng-click="event.random()" >随机</span>
 		<!-- 			<div class="tool-button" ng-click="event.solve()" >solve</div> -->
-					<span class="tool-button" ng-click="event.reset()" >reset</span>
-					<span class="tool-button" ng-click="event.auto()" >auto</span>
-					<span class="tool-button" ng-click="event.next()" >next</span>
+					<span class="tool-button" ng-click="event.reset()" >重置</span>
+					<span class="tool-button" ng-click="event.auto()" >动画</span>
+					<span class="tool-button" ng-click="event.next()" >下一个</span>
+					<span class="tool-button" ng-click="event.set()" >设置</span>
+					<span class="tool-line">设定源
+					<input class="tool-input" ng-model="inputSourceArr" />
+					</span>
 				</section>
 				<section class="step-status">
 					<span class="hasSolution" ng-class="{'success': hasSolution, 'fail': !hasSolution}">{{hasSolution?'has Solution':"hasn\'t Solution"}}
@@ -82,7 +86,7 @@
 		<p style="text-align: right;margin-right: 65px;">Copyright©2014 木林森林木</p>
 	</footer>
 <script>
-angular.bootstrap(document, ['eightNumsApp']);
+angular.bootstrap(document, ['eightNums_DBFSApp']);
 </script>
 </body>
 </html>
