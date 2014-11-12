@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title>8nums - DBFS</title>
+	<title>8nums - AStar(manh)</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" type="text/css" href="./css/base.css">
 	<link rel="stylesheet" type="text/css" href="./css/index_pcpage.css">
@@ -45,15 +45,11 @@
 			</section>
 			<div class="toolbar">
 				<section class="tool-controller">
-					<span class="tool-button" ng-click="event.random()" >随机</span>
+					<span class="tool-button" ng-click="event.random()" >random</span>
 		<!-- 			<div class="tool-button" ng-click="event.solve()" >solve</div> -->
-					<span class="tool-button" ng-click="event.reset()" >重置</span>
-					<span class="tool-button" ng-click="event.auto()" >动画</span>
-					<span class="tool-button" ng-click="event.next()" >下一个</span>
-					<span class="tool-button" ng-click="event.set()" >设置</span>
-					<span class="tool-line">设定源
-					<input class="tool-input" ng-model="inputSourceArr" />
-					</span>
+					<span class="tool-button" ng-click="event.reset()" >reset</span>
+					<span class="tool-button" ng-click="event.auto()" >auto</span>
+					<span class="tool-button" ng-click="event.next()" >next</span>
 				</section>
 				<section class="step-status">
 					<span class="hasSolution" ng-class="{'success': hasSolution, 'fail': !hasSolution}">{{hasSolution?'has Solution':"hasn\'t Solution"}}
@@ -80,14 +76,13 @@
 	<footer class="footer" style="text-align: left;text-indent: 62px;">
 		<p><b>HTML+Javascript</b> 快速构建的 <b>"八数码问题"</b></p>
 		<p>&nbsp;<b>&nbsp;状态存储</b> 使用每3个bit存储一个数字</p>
-		<p>&nbsp;<b>&nbsp;搜索算法</b> 由源序列和目标序列开始 双向宽搜(Double BFS)</p>
+		<p>&nbsp;<b>&nbsp;搜索算法</b> 基于Manhattan路径的AStar搜索</p>
 		<p>&nbsp;<b>&nbsp;动画实现</b> 使用CSS3 transform/transition实现</p>
 		<p>&nbsp;<b>&nbsp;交互实现</b> 使用AngularJS MVVM Framework进行数据绑定</p>
-		<p>&nbsp;<b>&nbsp;游戏规则</b> 使用键盘"↑，↓，←，→"按键移动滑块</p>
 		<p style="text-align: right;margin-right: 65px;">Copyright©2014 木林森林木</p>
 	</footer>
 <script>
-angular.bootstrap(document, ['eightNums_DBFSApp']);
+angular.bootstrap(document, ['eightNumsApp']);
 </script>
 </body>
 </html>
